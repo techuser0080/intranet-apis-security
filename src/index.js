@@ -1,6 +1,15 @@
 import express from 'express'
-import morgan from 'morgan'
+import userRouter from './api/routes/userRouter'
 
+const port = 4000
 const app = express()
-app.set("PORT", 4000)
-app.use(morgan("dev"))
+
+app.use(express.json())
+app.use(userRouter)
+
+const main = () => {
+    app.listen(port)
+    console.log('Server on port '+port)
+}
+
+main()

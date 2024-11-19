@@ -2,9 +2,11 @@
   "name": "oim_intranet_apis_security",
   "version": "1.0.0",
   "description": "apis-intranet-security",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/index.js"
   },
   "author": "Rodrigo Burgos S.",
   "license": "ISC",
