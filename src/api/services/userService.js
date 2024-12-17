@@ -1,27 +1,61 @@
 import { pool } from "../../config/database"
 
-export const users = async(req, res) => {
-    const [rows] = await pool.query('SELECT * FROM user')
+const users = async() => {
+    const [rows] = await new Promise((resolve, reject) => {
+        pool.query('CALL spGetUsers()', [], (err, results) => {
+            if (err) reject(new Error(err.message))
+            resolve(results)
+        })
+    })
     return rows
 }
 
-export const getUserById = async(req, res) => {
-    const userId = req.params.userId
-    const [rows] = await pool.query('SELECT * FROM user WHERE userId = ? and status = 1', [userId])
+const getUserById = async(userId) => {
+    const [rows] = await new Promise((resolve, reject) => {
+        pool.query('CALL spGetUserById(?)', [userId], (err, results) => {
+            if (err) reject(new Error(err.message))
+            resolve(results)
+        })
+    })
     return rows
 }
 
-export const createUser = async(user, name, lastName, age, gender) => {
-    const [rows] = await pool.query('INSERT INTO usuario (user, name, lastName, age, gender, status) VALUES (?,?,?,1)', [user, name, lastName, age, gender])
-    return {rows}
+const createUser = async(user, name, lastName, age, gender) => {
+    const result = await new Promise((resolve, reject) => {
+        pool.query('CALL spCreateUser(?,?,?,?,?,@statusCode); SELECT @statusCode', [user, name, 
+            lastName, age, gender], (err, results) => {
+                if (err) reject(new Error(err.message))
+                resolve(results)
+        })
+    })
+    return result
 }
 
-export const updateUser = async(user, name, lastName, age, gender, userId) => {
-    const [rows] = await pool.query('INSERT INTO usuario (user, name, lastName, age, gender, status) VALUES (?,?,?,1)', [user, name, lastName, age, gender])
-    return {rows}
+const updateUser = async(user, name, lastName, age, gender, userId) => {
+    const result = await new Promise((resolve, reject) => {
+        pool.query('CALL spCreateFolder(?,?,?,?,?,?,@statusCode); SELECT @statusCode', [user, name, 
+            lastName, age, gender, userId], (err, results) => {
+                if (err) reject(new Error(err.message))
+                resolve(results)
+        })
+    })
+    return result
 }
 
-export const deleteUser = async(userId) => {
-    const [rows] = await pool.query('UPDATE user SET status = 2 WHERE userId = ?', [userId])
-    return {rows}
+const deleteUser = async(userId) => {
+    const result = await new Promise((resolve, reject) => {
+        pool.query('CALL spDeleteUser(?,@statusCode); SELECT @statusCode', [userId], (err, results) => {
+                if (err) reject(new Error(err.message))
+                resolve(results)
+        })
+    })
+    return result
+}
+
+module.exports = {
+    users,
+    getUserById,
+    createUser,
+    updateUser,
+    deleteUser
 }
