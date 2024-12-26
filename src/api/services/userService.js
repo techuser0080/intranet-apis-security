@@ -1,16 +1,18 @@
-import { pool } from "../../config/database"
+import { pool } from "../../config/database.js"
 
-const users = async() => {
+export const getUsersService = async() => {
     const [rows] = await new Promise((resolve, reject) => {
         pool.query('CALL spGetUsers()', [], (err, results) => {
+            console.log('method')
             if (err) reject(new Error(err.message))
+                console.log(results)
             resolve(results)
         })
     })
     return rows
 }
 
-const getUserById = async(userId) => {
+export const getUserByIdService = async(userId) => {
     const [rows] = await new Promise((resolve, reject) => {
         pool.query('CALL spGetUserById(?)', [userId], (err, results) => {
             if (err) reject(new Error(err.message))
@@ -20,10 +22,10 @@ const getUserById = async(userId) => {
     return rows
 }
 
-const createUser = async(user, name, lastName, age, gender) => {
+export const createUserService = async(user, name, lastName, age, gender) => {
     const result = await new Promise((resolve, reject) => {
         pool.query('CALL spCreateUser(?,?,?,?,?,@statusCode); SELECT @statusCode', [user, name, 
-            lastName, age, gender], (err, results) => {
+            lastName, gender, age], (err, results) => {
                 if (err) reject(new Error(err.message))
                 resolve(results)
         })
@@ -31,10 +33,10 @@ const createUser = async(user, name, lastName, age, gender) => {
     return result
 }
 
-const updateUser = async(user, name, lastName, age, gender, userId) => {
+export const updateUserService = async(user, name, lastName, age, gender, userId) => {
     const result = await new Promise((resolve, reject) => {
-        pool.query('CALL spCreateFolder(?,?,?,?,?,?,@statusCode); SELECT @statusCode', [user, name, 
-            lastName, age, gender, userId], (err, results) => {
+        pool.query('CALL spUpdateUser(?,?,?,?,?,?,@statusCode); SELECT @statusCode', [name, lastName, 
+            user, gender, age, userId], (err, results) => {
                 if (err) reject(new Error(err.message))
                 resolve(results)
         })
@@ -42,7 +44,7 @@ const updateUser = async(user, name, lastName, age, gender, userId) => {
     return result
 }
 
-const deleteUser = async(userId) => {
+export const deleteUserService = async(userId) => {
     const result = await new Promise((resolve, reject) => {
         pool.query('CALL spDeleteUser(?,@statusCode); SELECT @statusCode', [userId], (err, results) => {
                 if (err) reject(new Error(err.message))
@@ -50,12 +52,4 @@ const deleteUser = async(userId) => {
         })
     })
     return result
-}
-
-module.exports = {
-    users,
-    getUserById,
-    createUser,
-    updateUser,
-    deleteUser
 }

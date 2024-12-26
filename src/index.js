@@ -1,7 +1,7 @@
 import express from 'express'
-import userRouter from './api/routes/userRouter'
+import userRouter from './api/routes/userRouter.js'
 
-const port = 4000
+const port = 4001
 const app = express()
 
 app.use(express.json())
