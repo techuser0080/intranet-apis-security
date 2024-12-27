@@ -3,9 +3,7 @@ import { pool } from "../../config/database.js"
 export const getUsersService = async() => {
     const [rows] = await new Promise((resolve, reject) => {
         pool.query('CALL spGetUsers();', [], (err, results) => {
-            console.log('method')
             if (err) reject(new Error(err.message))
-                console.log(results)
             resolve(results)
         })
     })
@@ -22,10 +20,20 @@ export const getUserByIdService = async(userId) => {
     return rows
 }
 
-export const createUserService = async(user, name, lastName, age, gender) => {
+export const getUserByEmailService = async(email) => {
+    const [rows] = await new Promise((resolve, reject) => {
+        pool.query('CALL spGetUserByEmail(?);', [email], (err, results) => {
+            if (err) reject(new Error(err.message))
+            resolve(results)
+        })
+    })
+    return rows
+}
+
+export const createUserService = async(name, lastName, email, password, gender, age) => {
     const result = await new Promise((resolve, reject) => {
-        pool.query('CALL spCreateUser(?,?,?,?,?,@statusCode); SELECT @statusCode;', [user, name, 
-            lastName, gender, age], (err, results) => {
+        pool.query('CALL spCreateUser(?,?,?,?,?,@statusCode); SELECT @statusCode;', [name, lastName, 
+            email, password, gender, age], (err, results) => {
                 if (err) reject(new Error(err.message))
                 resolve(results)
         })
@@ -42,10 +50,10 @@ export const loginService = async(user, password) => {
     })
 }
 
-export const updateUserService = async(user, name, lastName, age, gender, userId) => {
+export const updateUserService = async(name, lastName, email, gender, age, userId) => {
     const result = await new Promise((resolve, reject) => {
         pool.query('CALL spUpdateUser(?,?,?,?,?,?,@statusCode); SELECT @statusCode;', [name, lastName, 
-            user, gender, age, userId], (err, results) => {
+            email, gender, age, userId], (err, results) => {
                 if (err) reject(new Error(err.message))
                 resolve(results)
         })
