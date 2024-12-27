@@ -1,4 +1,4 @@
-import { getUsersService, getUserByIdService, createUserService, updateUserService, deleteUserService } from "../services/userService.js"
+import { getUsersService, getUserByIdService, createUserService, updateUserService, deleteUserService, loginService } from "../services/userService.js"
 
 export const getUsers = async(req, res) => {
     const rows = await getUsersService()
@@ -18,6 +18,13 @@ export const createUser = async(req, res) => {
     const { user, name, lastName, age, gender } = req.body
     const result = await createUserService(user, name, lastName, age, gender)
     if(result == 2) res.sendStatus(500)
+    res.sendStatus(200)
+}
+
+export const login = async(req, res) => {
+    const { user, password } = req.body
+    const result = await loginService(user, password)
+    if (result == 2) res.sendStatus(500)
     res.sendStatus(200)
 }
 
