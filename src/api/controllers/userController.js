@@ -11,7 +11,7 @@ export const getUsers = async(req, res) => {
 export const getUserById = async(req, res) => {
     const userId = req.params.userId
     const [rows] = await getUserByIdService(userId)
-    if (rows.length <=0) return res.status(404).json({
+    if (rows.length <= 0) return res.sendStatus(404).json({
         message: 'No se encontraron registros.'
     })
     res.send(rows[0])
@@ -20,7 +20,7 @@ export const getUserById = async(req, res) => {
 export const getUserByEmail = async(req, res) => {
     const email = req.params.userId
     const [rows] = await getUserByEmailService(email)
-    if (rows.length <=0) return res.status(404).json({
+    if (rows.length <=0) return res.sendStatus(404).json({
         message: 'No se encontraron registros.'
     })
     res.send(rows[0])
@@ -28,9 +28,6 @@ export const getUserByEmail = async(req, res) => {
 
 export const createUser = async(req, res) => {
     const { name, lastName, email, password, age, gender } = req.body
-    if ( typeof email === 'string') throw new Error('El email debe ser string.')
-    if ( String(email).includes('hotmail.com') == false || String(email).includes('gmail.com') == false 
-        || String(email).includes('outlook.com')) throw new Errror('Email debe tener formato correo.')
     const [rows] = await getUserByEmailService(email)
     if (rows.length > 0) res.sendStatus(500)
     const hashedPassword = await bcrypt.hash(password, 10)

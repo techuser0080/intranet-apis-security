@@ -5,6 +5,6 @@ export const loginValidation = [
     check('email').exists().not().isEmpty().isEmail(),
     check('password').exists().not().isEmpty(),
     (req, res, next) => {
-        validateResult()
+        validateResult(req, res, next)
     }
 ]
