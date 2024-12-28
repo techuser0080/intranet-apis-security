@@ -1,0 +1,8 @@
+module.exports.Constants = Object.freeze({
+    JWT_SECRET_SIGNATURE_NAME: '',
+    SECURITY_DATABASE_HOST: '',
+    SECURITY_DATABASE_PORT: '',
+    SECURITY_DATABASE_USER_NAME: '',
+    SECURITY_DATABASE_PASSWORD: '',
+    COOKIE_SECURITY_NAME: 'acces_token'
+})

@@ -1,7 +1,7 @@
 import { getUsersService, getUserByIdService, createUserService, updateUserService, deleteUserService, loginService, getUserByEmailService } from "../services/userService.js"
+import { jwtSign } from "../middlewares/jwtMiddleware.js"
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
-import cookieParser from "cookie-parser"
+import { Constants } from "../../config/constants.js"
 
 export const getUsers = async(req, res) => {
     const rows = await getUsersService()
@@ -43,13 +43,12 @@ export const login = async(req, res) => {
     const { email, password } = req.body
     const userObject = await getUserByEmail(email)
     if (userObject == 2) res.sendStatus(500)
+
     const isValid = bcrypt.compare(password, userObject.password)
     if (!isValid) res.sendStatus(500)
-    const token = jwt.sign({ userName: userObject.userName, userLastName: userLastName, email: userObject.email,
-                            gender: userObject.gender, age: userObject.age}, '', {
-                                expiresIn: '1h'
-                            })
-    res.sendStatus(200).cookie('access_token', token, {
+
+    const token = jwtSign(userObject)
+    res.sendStatus(200).cookie(Constants.COOKIE_SECURITY_NAME, token, {
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
