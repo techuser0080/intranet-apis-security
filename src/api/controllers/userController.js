@@ -57,6 +57,10 @@ export const login = async(req, res) => {
     })
 }
 
+export const logout = (req, res) => {
+    res.clearCookie('acces_token').json('ok')
+}
+
 export const updateUser = async(req, res) => {
     const { name, lastName, email, gender, age, userId } = req.body
     const result = await updateUserService(name, lastName, email, gender, age, userId)
