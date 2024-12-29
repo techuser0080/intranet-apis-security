@@ -1,10 +1,11 @@
 import mysql from 'mysql2'
+import { Constants } from './constants'
 
 export const pool = mysql.createPool({
-    host: '127.0.0.1',
-    user: 'root',
-    port: 3306,
-    password: 'admin123',
-    database: 'desa_security',
+    host: Constants.SECURITY_DATABASE_HOST,
+    user: Constants.SECURITY_DATABASE_USER_NAME,
+    port: Constants.SECURITY_DATABASE_PORT,
+    password: Constants.SECURITY_DATABASE_PASSWORD,
+    database: Constants.SECURITY_DATABASE_NAME,
     multipleStatements: true
 })

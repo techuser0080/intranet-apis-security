@@ -2,6 +2,7 @@ import express from 'express'
 import userRouter from './api/routes/userRouter.js'
 import cookieParser from 'cookie-parser'
 import jwt from 'jsonwebtoken'
+import { Constants } from './config/constants.js'
 
 const port = 4001
 const app = express()
@@ -14,7 +15,7 @@ app.use((req, res, next) => {
     req.session = { user: null }
 
     try {
-        const data = jwt.verify(token, '')
+        const data = jwt.verify(token, Constants.JWT_SECRET_SIGNATURE_NAME)
         req.session.user = data
     } catch(error) {
         console.log(error)
