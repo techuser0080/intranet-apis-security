@@ -15,13 +15,16 @@ app.use((req, res, next) => {
     req.session = { user: null }
 
     try {
-        const data = jwt.verify(token, Constants.JWT_SECRET_SIGNATURE_NAME)
-        req.session.user = data
+        if (token && String(token).length > 0 ) {
+            console.log(token)
+            const data = jwt.verify(token, Constants.JWT_SECRET_SIGNATURE_NAME)
+            console.log(data)
+            req.session.user = data
+            next()
+        } else next()
     } catch(error) {
         console.log(error)
     }
-
-    next()
 })
 
 app.use('/api/user', userRouter)

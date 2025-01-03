@@ -7,7 +7,7 @@ const router = Router()
 
 router.get('/all', getUsers)
 router.post('', createUserValidation, createUser)
-router.post('/login', loginValidation, login)
+router.post('/login', login)
 router.post('/logout', logout)
 router.put('', updateUserValidation, updateUser)
 router.delete('/:userId', deleteUserValidation, deleteUser)

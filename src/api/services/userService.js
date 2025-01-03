@@ -24,7 +24,7 @@ export const getUserByEmailService = async(email) => {
     const [rows] = await new Promise((resolve, reject) => {
         pool.query('CALL spGetUserByEmail(?);', [email], (err, results) => {
             if (err) reject(new Error(err.message))
-            resolve(results)
+            resolve(results[0])
         })
     })
     return rows
@@ -32,10 +32,10 @@ export const getUserByEmailService = async(email) => {
 
 export const createUserService = async(name, lastName, email, password, gender, age) => {
     const result = await new Promise((resolve, reject) => {
-        pool.query('CALL spCreateUser(?,?,?,?,?,@statusCode); SELECT @statusCode;', [name, lastName, 
+        pool.query('CALL spCreateUser(?,?,?,?,?,?,@statusCode); SELECT @statusCode AS result;', [name, lastName, 
             email, password, gender, age], (err, results) => {
                 if (err) reject(new Error(err.message))
-                resolve(results)
+                resolve(results[1][0])
         })
     })
     return result
@@ -43,19 +43,19 @@ export const createUserService = async(name, lastName, email, password, gender, 
 
 export const loginService = async(user, password) => {
     const result = await new Promise((resolve, reject) => {
-        pool.query('CALL spLogin(?,?,@statusCode); SELECT @statusCode;', [user, password], (err, results) => {
+        pool.query('CALL spLogin(?,?,@statusCode); SELECT @statusCode AS result;', [user, password], (err, results) => {
             if (err) reject(new Error(err.message))
-            resolve(results)
+            resolve(results[1][0])
         })
     })
 }
 
 export const updateUserService = async(name, lastName, email, gender, age, userId) => {
     const result = await new Promise((resolve, reject) => {
-        pool.query('CALL spUpdateUser(?,?,?,?,?,?,@statusCode); SELECT @statusCode;', [name, lastName, 
+        pool.query('CALL spUpdateUser(?,?,?,?,?,?,@statusCode); SELECT @statusCode AS result;', [name, lastName, 
             email, gender, age, userId], (err, results) => {
                 if (err) reject(new Error(err.message))
-                resolve(results)
+                resolve(results[1][0])
         })
     })
     return result
@@ -63,9 +63,9 @@ export const updateUserService = async(name, lastName, email, gender, age, userI
 
 export const deleteUserService = async(userId) => {
     const result = await new Promise((resolve, reject) => {
-        pool.query('CALL spDeleteUser(?,@statusCode); SELECT @statusCode;', [userId], (err, results) => {
+        pool.query('CALL spDeleteUser(?,@statusCode); SELECT @statusCode AS result;', [userId], (err, results) => {
                 if (err) reject(new Error(err.message))
-                resolve(results)
+                resolve(results[1][0])
         })
     })
     return result

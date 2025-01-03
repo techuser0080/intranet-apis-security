@@ -1,5 +1,5 @@
 import mysql from 'mysql2'
-import { Constants } from './constants'
+import { Constants } from './constants.js'
 
 export const pool = mysql.createPool({
     host: Constants.SECURITY_DATABASE_HOST,
