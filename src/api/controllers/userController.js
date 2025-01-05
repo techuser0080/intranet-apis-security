@@ -61,10 +61,10 @@ export const login = async(req, res) => {
         const userObject = await getUserByEmailService(email)
         if (userObject == null) return res.status(500).send(responseBody(2, Constants.MESSAGE_STATUS_ERROR, null))
         if (userObject == {}) return res.status(500).send(responseBody(3, Constants.MESSAGE_USER_EMAIL_DOESNT_EXISTS , null))
-            const isValid = await bcrypt.compare(password, userObject.password)
+        const isValid = await bcrypt.compare(password, userObject.password)
         if (!isValid) return res.status(200).send(responseBody(2, Constants.MESSAGE_LOGIN_INVALID_PASSWORD, null))
-            const token = jwtSign(userObject)
         userObject.password = Constants.STRING_EMPTY
+        const token = jwtSign(userObject)
         userObject.token = token
         res.status(200).cookie(Constants.COOKIE_SECURITY_NAME, token, {
             httpOnly: true,
@@ -83,7 +83,8 @@ export const logout = (req, res) => {
 
 export const updateUser = async(req, res) => {
     try {
-        const { name, lastName, email, gender, age, userId } = req.body
+        const { userId } = req.params
+        const { name, lastName, email, gender, age } = req.body
         const { result } = await updateUserService(name, lastName, email, gender, age, userId)
         if (result == null) return res.status(500).send(response(2, Constants.MESSAGE_STATUS_ERROR, null))
         if (result != 1) return res.status(500).send(responseBody(2, Constants.MESSAGE_STATUS_ERROR, null))
@@ -97,7 +98,7 @@ export const deleteUser = async(req, res) => {
     try {
         const { userId } = req.params
         const { result } = await deleteUserService(userId)
-        if (result = null) return res.status(500).send(responseBody(2, Constants.MESSAGE_STATUS_ERROR, null))
+        if (result == null) return res.status(500).send(responseBody(2, Constants.MESSAGE_STATUS_ERROR, null))
         if (result == 2) return res.status(500).send(responseBody(2, Constants.MESSAGE_STATUS_ERROR, null))
         return res.status(200).send(responseBody(1, Constants.MESSAGE_STATUS_OK, null))
     } catch (error) {
