@@ -30,6 +30,16 @@ export const getUserByEmailService = async(email) => {
     return rows
 }
 
+export const getCompaniesByUserIdService = async(userId) => {
+    const [rows] = await new Promise((resolve, reject) => {
+        pool.query('CALL spGetCompaniesByUserId(?);', [userId], (err, results) => {
+            if (err) reject(new Error(err.message))
+            resolve(results)
+        })
+    })
+    return rows
+}
+
 export const createUserService = async(name, lastName, email, password, gender, age) => {
     const result = await new Promise((resolve, reject) => {
         pool.query('CALL spCreateUser(?,?,?,?,?,?,@statusCode); SELECT @statusCode AS result;', [name, lastName, 

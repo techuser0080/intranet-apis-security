@@ -6,12 +6,16 @@ import cors from 'cors'
 import { Constants } from './config/constants.js'
 import { responseBody } from './config/responseEntity.js'
 
-const port = 4001
+const port = 8080
 const app = express()
 
 app.use(express.json())
 app.use(cookieParser())
-app.use(cors())
+app.use(cors({
+    credentials: true,
+    origin: true
+}))
+app.set('timeout', 500000)
 
 app.use((req, res, next) => {
     if (req.path == '/api/user/login') return next()

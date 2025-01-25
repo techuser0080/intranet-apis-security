@@ -11,7 +11,7 @@ export const Constants = Object.freeze({
     MESSAGE_NO_RESULTS_FOUND: 'No se encontraron registros.',
     MESSAGE_LOGIN_INVALID_PASSWORD: 'El password es incorrecto.',
     MESSAGE_USER_ALREADY_EXISTS: 'El email ingresado ya ha sido creado.',
-    MESSAGE_USER_EMAIL_DOESNT_EXISTS: 'El email ingresado no existe.',
+    MESSAGE_USER_EMAIL_DOESNT_EXISTS: 'El email ingresado no existe',
     STRING_EMPTY: '',
     NUMBER_ZERO: 0
 })

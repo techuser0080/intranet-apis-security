@@ -1,4 +1,4 @@
-import { getUsersService, getUserByIdService, createUserService, updateUserService, deleteUserService, getUserByEmailService } from "../services/userService.js"
+import { getUsersService, getUserByIdService, createUserService, updateUserService, deleteUserService, getUserByEmailService, getCompaniesByUserIdService } from "../services/userService.js"
 import { jwtSign } from "../middlewares/jwtMiddleware.js"
 import bcrypt from 'bcrypt'
 import { Constants } from "../../config/constants.js"
@@ -22,7 +22,19 @@ export const getUserById = async(req, res) => {
         const rows = await getUserByIdService(userId)
         if (rows == null) return res.status(500).send(responseBody(2, Constants.MESSAGE_STATUS_ERROR, null))
         if (rows.length <= 0) return res.status(500).send(responseBody(3, Constants.MESSAGE_NO_RESULTS_FOUND, null))
-        return res.status(500).send(responseBody(1, Constants.MESSAGE_STATUS_OK, rows[0]))
+        return res.status(200).send(responseBody(1, Constants.MESSAGE_STATUS_OK, rows[0]))
+    } catch (error) {
+        res.status(500).send(responseBody(2, Constants.MESSAGE_STATUS_ERROR, null))
+    }
+}
+
+export const getCompaniesByUserId = async(req, res) => {
+    try {
+        const userId = req.params.userId
+        const rows = await getCompaniesByUserIdService(userId)
+        if (rows == null) return res.status(500).send(responseBody(2, Constants.MESSAGE_STATUS_ERROR, null))
+        if (rows.length <= 0) return res.status(500).send(responseBody(3, Constants.MESSAGE_NO_RESULTS_FOUND, null))
+        return res.status(200).send(responseBody(1, Constants.MESSAGE_STATUS_OK, rows))
     } catch (error) {
         res.status(500).send(responseBody(2, Constants.MESSAGE_STATUS_ERROR, null))
     }
@@ -34,7 +46,7 @@ export const getUserByEmail = async(req, res) => {
         const rows = await getUserByEmailService(email)
         if (rows == null) return res.status(500).send(responseBody(2, Constants.MESSAGE_STATUS_ERROR, null))
         if (rows.length <= 0) return res.status(500).send(responseBody(3, Constants.MESSAGE_NO_RESULTS_FOUND, null))
-        return res.status(500).send(responseBody(1, Constants.MESSAGE_STATUS_OK, rows[0]))
+        return res.status(200).send(responseBody(1, Constants.MESSAGE_STATUS_OK, rows[0]))
     } catch (error) {
         res.status(500).send(responseBody(2, Constants.MESSAGE_STATUS_ERROR, null))
     }
