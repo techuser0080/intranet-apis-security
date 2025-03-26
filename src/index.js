@@ -3,13 +3,15 @@ import userRouter from './api/routes/userRouter.js'
 import cookieParser from 'cookie-parser'
 import jwt from 'jsonwebtoken'
 import cors from 'cors'
+import dotenv from 'dotenv'
 import { Constants } from './config/constants.js'
 import { responseBody } from './config/responseEntity.js'
 
-const port = 8080
+const port = process.env.PORT || 8080
 const app = express()
 
 app.use(express.json())
+app.use(dotenv.config())
 app.use(cookieParser())
 app.use(cors({
     credentials: true,
