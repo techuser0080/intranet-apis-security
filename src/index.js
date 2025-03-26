@@ -7,11 +7,12 @@ import dotenv from 'dotenv'
 import { Constants } from './config/constants.js'
 import { responseBody } from './config/responseEntity.js'
 
+dotenv.config()
+
 const port = process.env.PORT || 8080
 const app = express()
 
 app.use(express.json())
-app.use(dotenv.config())
 app.use(cookieParser())
 app.use(cors({
     credentials: true,
