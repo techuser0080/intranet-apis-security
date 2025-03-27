@@ -9,7 +9,7 @@ import { responseBody } from './config/responseEntity.js'
 
 dotenv.config()
 
-const port = process.env.PORT || 8080
+const port = process.env.PORT || 8082
 const app = express()
 
 app.use(express.json())
