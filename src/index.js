@@ -16,7 +16,7 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
     credentials: true,
-    origin: true
+    origin: 'https://proud-rock-078ed150f.6.azurestaticapps.net'
 }))
 app.set('timeout', 500000)
 
