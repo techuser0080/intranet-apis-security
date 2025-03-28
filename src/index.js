@@ -18,7 +18,6 @@ app.use(cors({
     credentials: true,
     origin: 'https://proud-rock-078ed150f.6.azurestaticapps.net'
 }))
-app.set('timeout', 500000)
 
 app.use((req, res, next) => {
     if (req.path == '/api/user/login') return next()
