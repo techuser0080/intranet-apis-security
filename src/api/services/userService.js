@@ -33,7 +33,10 @@ export const getRolesByUserIdService = async(userId) => {
 export const getUserByEmailService = async(email) => {
     const [rows] = await new Promise((resolve, reject) => {
         pool.query('CALL spGetUserByEmail(?);', [email], (err, results) => {
-            if (err) reject(new Error(err.message))
+            if (err) {
+                console.log(err)
+                reject(new Error(err.message))
+            }
             resolve(results[0])
         })
     })
